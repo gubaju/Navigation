@@ -37,7 +37,6 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
     fun build() {
 
         if (!validate()) return
-
         menuList.clear()
         viewTopNavExpandedNavigationView.post {
             adapter?.items?.forEachIndexed { i, item ->
@@ -46,7 +45,7 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
                 menuList.put(view, item)
             }
         }
-        collapse()
+
     }
 
     private fun validate(): Boolean = adapter != null && adapter?.items != null && !adapter?.items?.isEmpty()!!
@@ -57,6 +56,10 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
         // Get current title
         toolbarTitle = toolbar?.title.toString()
         toolbarIcon = toolbar?.navigationIcon
+
+        // Collapsed
+        viewTopNavExpandedHolder.translationY = -1000f
+        viewTopNavExpandedNavigationView.translationY = -1000f
     }
 
     // Toggle between expanded and collapsed states
