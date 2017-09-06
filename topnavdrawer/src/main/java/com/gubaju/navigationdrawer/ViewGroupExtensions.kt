@@ -42,6 +42,12 @@ internal fun calculateMargin(width: Int, itemWidth: Int, margin: Int): Int {
     return if (count > 0) (width - count * itemWidth) / count else 0
 }
 
+internal fun calculateItemMargin(width: Int, itemWidth: Int, margin: Int): Int {
+    val count = width / itemWidth
+    return width - (count * margin)
+}
+
+
 internal fun calculateCount(width: Int, itemWidth: Int, margin: Int): Int = width / (itemWidth + margin)
 
 internal fun isClick(startX: Float, startY: Float, x: Float, y: Float): Boolean = Math.abs(x - startX) < 20 && Math.abs(y - startY) < 20

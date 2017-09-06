@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
-        android:id="@+id/viewTopNavExpandedFrame"
+        android:id="@+id/viewTopNavExpandedHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -11,6 +11,8 @@
         <com.gubaju.navigationdrawer.ExpandedNavigationView
             android:id="@+id/viewTopNavExpandedNavigationView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal" />
     </FrameLayout>
 </merge>

@@ -3,5 +3,4 @@
     <dimen name="margin_zero">0dp</dimen>
     <dimen name="margin_normal">8dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
-    <dimen name="margin_large">22dp</dimen>
 </resources>

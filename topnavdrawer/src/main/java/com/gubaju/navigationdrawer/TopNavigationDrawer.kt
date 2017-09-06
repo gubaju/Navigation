@@ -15,8 +15,8 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
 
     var adapter: TopNavigationAdapter<T>? = null
 
-    private val ANIMATION_DURATION_OPEN: Long = 200
-    private val ANIMATION_DURATION_CLOSE: Long = 400
+    private val ANIMATION_FAST: Long = 200
+    private val ANIMATION_SLOW: Long = 400
     private var isCollapsed: Boolean = false
     private var isBusy: Boolean = false
     private val menuList: LinkedHashMap<MenuItem, T> = LinkedHashMap()
@@ -59,15 +59,15 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
         // Change collapse status
         isCollapsed = false
 
-        ValueAnimator.ofFloat(0f, ANIMATION_DURATION_OPEN.toFloat())
-                .setDuration(ANIMATION_DURATION_OPEN)
+        ValueAnimator.ofFloat(0f, ANIMATION_FAST.toFloat())
+                .setDuration(ANIMATION_FAST)
                 .apply {
                     addUpdateListener {
                         isBusy = true
 
-                        val ratio = it.animatedValue as Float / ANIMATION_DURATION_OPEN
-                        viewTopNavExpandedFrame.translationY = -viewTopNavExpandedFrame.height.toFloat() * (1 - ratio)
-                        viewTopNavExpandedNavigationView.translationY = -viewTopNavExpandedFrame.height.toFloat() * (1 - ratio)
+                        val ratio = it.animatedValue as Float / ANIMATION_FAST
+                        viewTopNavExpandedHolder.translationY = -viewTopNavExpandedHolder.height.toFloat() * (1 - ratio)
+                        viewTopNavExpandedNavigationView.translationY = -viewTopNavExpandedHolder.height.toFloat() * (1 - ratio)
 
                         if (ratio == 1f) {
                             isBusy = false
@@ -81,14 +81,14 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
         // Change collapse status
         isCollapsed = true
 
-        ValueAnimator.ofFloat(0f, ANIMATION_DURATION_CLOSE.toFloat())
-                .setDuration(ANIMATION_DURATION_CLOSE)
+        ValueAnimator.ofFloat(0f, ANIMATION_SLOW.toFloat())
+                .setDuration(ANIMATION_SLOW)
                 .apply {
                     addUpdateListener {
                         isBusy = true
 
-                        val ratio = it.animatedValue as Float / ANIMATION_DURATION_CLOSE
-                        viewTopNavExpandedFrame.translationY = ratio * (-measuredHeight)
+                        val ratio = it.animatedValue as Float / ANIMATION_SLOW
+                        viewTopNavExpandedHolder.translationY = ratio * (-measuredHeight)
                         viewTopNavExpandedNavigationView.translationY = ratio * (-measuredHeight)
 
                         if (ratio == 1f) {
@@ -103,7 +103,7 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
         for (i in 0 until childCount) {
             val child = getChildAt(i) as View
 
-            val holder = child.findViewById(R.id.viewTopNavExpandedFrame)
+            val holder = child.findViewById(R.id.viewTopNavExpandedHolder)
             val view = child.findViewById(R.id.viewTopNavExpandedNavigationView)
 
             val params = view.layoutParams as FrameLayout.LayoutParams

@@ -14,8 +14,8 @@ import org.jetbrains.anko.configuration
 
 class ExpandedNavigationView : ViewGroup {
 
-    private var spanVertical: Int = 3
-    private var spanHorizontal: Int = 5
+    private var spanVertical: Int = 4
+    private var spanHorizontal: Int = 6
     private var prevItem: View? = null
     private var prevX: Int? = null
     private var prevY: Int? = null
@@ -23,12 +23,39 @@ class ExpandedNavigationView : ViewGroup {
     private var startX = 0f
     private var startY = 0f
 
-    private var margin: Int = dpToPx(getDimen(R.dimen.margin_medium))
+    private var margin: Int = 0
+    private var constantMargin: Int = dpToPx(getDimen(R.dimen.margin_normal))
+    private var halfMargin: Int = constantMargin / 2
     private val filters: LinkedHashMap<MenuItem, Coordinates> = LinkedHashMap()
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleRes: Int) : super(context, attrs, defStyleRes)
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+
+        val itemWidth = (calculateSize(widthMeasureSpec, LayoutParams.MATCH_PARENT) /
+                if (context.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    spanVertical
+                } else {
+                    spanHorizontal
+                }) - constantMargin
+
+        for (i in 0 until childCount) {
+            val child: MenuItem = getChildAt(i) as MenuItem
+            val thumb = child.findViewById(R.id.itemMenuThumb)
+
+            val sizeParams = thumb.layoutParams as LayoutParams
+            sizeParams.width = itemWidth
+            thumb.layoutParams = sizeParams
+
+            // Padding for child
+            child.setPadding(halfMargin, halfMargin, halfMargin, halfMargin)
+        }
+
+        setMeasuredDimension(calculateSize(widthMeasureSpec, LayoutParams.MATCH_PARENT),
+                calculateSize(heightMeasureSpec, calculateDesiredHeight()))
+    }
 
     override fun onLayout(p0: Boolean, p1: Int, p2: Int, p3: Int, p4: Int) {
         if (!filters.isEmpty()) {
@@ -39,7 +66,6 @@ class ExpandedNavigationView : ViewGroup {
                 if (coordinates != null) {
                     child.layout(coordinates.x, coordinates.y, coordinates.x + child.measuredWidth, coordinates.y + child.measuredHeight)
                 }
-
             }
         }
     }
@@ -59,7 +85,6 @@ class ExpandedNavigationView : ViewGroup {
         if (filters.isEmpty()) {
             for (i in 0 until childCount) {
                 val child: MenuItem = getChildAt(i) as MenuItem
-
                 child.measure(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
 
                 if (prevItem == null) {
@@ -86,27 +111,6 @@ class ExpandedNavigationView : ViewGroup {
         }
 
         return prevHeight
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-
-
-        for (i in 0 until childCount) {
-            val child: MenuItem = getChildAt(i) as MenuItem
-            val thumb = child.findViewById(R.id.itemMenuThumb)
-
-            val params = thumb.layoutParams as LayoutParams
-            params.width = (calculateSize(widthMeasureSpec, LayoutParams.MATCH_PARENT) /
-                    if (context.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                        spanVertical
-                    } else {
-                        spanHorizontal
-                    }) - margin
-            thumb.layoutParams = params
-        }
-
-        setMeasuredDimension(calculateSize(widthMeasureSpec, LayoutParams.MATCH_PARENT),
-                calculateSize(heightMeasureSpec, calculateDesiredHeight()))
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
