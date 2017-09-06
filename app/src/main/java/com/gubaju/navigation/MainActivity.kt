@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         // Navigation Drawer
         nav = findViewById(R.id.activityMainTopNavigation) as TopNavigationDrawer<NavModel>
         nav!!.adapter = NavAdapter(this, getNavModels())
+        nav!!.setToolbar(activityMainToolbar)
         nav!!.build()
     }
 

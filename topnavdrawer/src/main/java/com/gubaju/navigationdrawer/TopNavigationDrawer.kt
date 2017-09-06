@@ -2,6 +2,9 @@ package com.gubaju.navigationdrawer
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +18,13 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
 
     var adapter: TopNavigationAdapter<T>? = null
 
+    private var toolbarTitle: String? = null
+    private var toolbarIcon: Drawable? = null
+
+    private var toolbar: Toolbar? = null
     private val ANIMATION_FAST: Long = 200
     private val ANIMATION_SLOW: Long = 400
-    private var isCollapsed: Boolean = false
+    private var isCollapsed: Boolean = true
     private var isBusy: Boolean = false
     private val menuList: LinkedHashMap<MenuItem, T> = LinkedHashMap()
 
@@ -39,9 +46,18 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
                 menuList.put(view, item)
             }
         }
+        collapse()
     }
 
     private fun validate(): Boolean = adapter != null && adapter?.items != null && !adapter?.items?.isEmpty()!!
+
+    fun setToolbar(activityMainToolbar: Toolbar) {
+        this.toolbar = activityMainToolbar
+
+        // Get current title
+        toolbarTitle = toolbar?.title.toString()
+        toolbarIcon = toolbar?.navigationIcon
+    }
 
     // Toggle between expanded and collapsed states
     fun toggle() {
@@ -69,6 +85,10 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
                         viewTopNavExpandedHolder.translationY = -viewTopNavExpandedHolder.height.toFloat() * (1 - ratio)
                         viewTopNavExpandedNavigationView.translationY = -viewTopNavExpandedHolder.height.toFloat() * (1 - ratio)
 
+                        // Animate toolbar icon
+                        toolbar?.setTitle(R.string.title_menu)
+                        toolbar?.navigationIcon = ContextCompat.getDrawable(context, R.drawable.ic_close)
+
                         if (ratio == 1f) {
                             isBusy = false
                         }
@@ -91,6 +111,10 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
                         viewTopNavExpandedHolder.translationY = ratio * (-measuredHeight)
                         viewTopNavExpandedNavigationView.translationY = ratio * (-measuredHeight)
 
+                        // Animate toolbar icon
+                        toolbar?.title = toolbarTitle
+                        toolbar?.navigationIcon = toolbarIcon
+
                         if (ratio == 1f) {
                             isBusy = false
                         }
@@ -112,4 +136,5 @@ class TopNavigationDrawer<T : MenuModel> : FrameLayout {
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
+
 }
