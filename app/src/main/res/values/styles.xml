@@ -1,0 +1,41 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textAppearance">@style/Toolbar.TextAppearance</item>
+        <item name="actionMenuTextColor">@color/colorWhite</item>
+    </style>
+
+    <style name="Toolbar.TextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">sans-serif-normal</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="TabLayout.Tab" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">@color/colorWhite</item>
+        <item name="tabIndicatorColor">@color/colorWhite</item>
+        <item name="tabTextAppearance">@style/TabLayout.TextAppearance</item>
+    </style>
+
+    <style name="TabLayout.TextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:fontFamily">sans-serif-normal</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+</resources>
